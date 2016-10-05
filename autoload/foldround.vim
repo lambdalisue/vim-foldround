@@ -68,7 +68,7 @@ function! s:set_foldmethod(offset, rule, foldmethods) abort
   else
     let foldmethods = filter(
           \ copy(a:foldmethods),
-          \ 'v:val !=# "diff"',
+          \ 'v:val !=# ''diff''',
           \)
   endif
   let foldmethod = &foldenable ? &foldmethod : 'disable'
@@ -80,8 +80,7 @@ function! s:set_foldmethod(offset, rule, foldmethods) abort
   else
     let index += a:offset
   endif
-  let index = index >= len(foldmethods) ? 0 : index
-  let index = index < 0 ? len(foldmethods) - 1 : index
+  let index = index % len(foldmethods)
   let new_foldmethod = foldmethods[index]
   if new_foldmethod ==# 'disable'
     setlocal nofoldenable
