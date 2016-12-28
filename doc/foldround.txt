@@ -1,6 +1,6 @@
 *vim-foldround.txt*				Walk around foldmethod
 
-Version: 0.1.0
+Version: 0.2.0
 Author:  Alisue <lambdalisue@hashnote.net>		*vim-foldround-author*
 Support: Vim 7.4 and above
 License: MIT license
@@ -50,15 +50,6 @@ Use Plug.vim, neobundle.vim, or whatever like:
 >
 	" Plug.vim
 	Plug 'lambdalisue/vim-foldround'
-
-	" neobundle.vim
-	NeoBundle 'lambdalisue/vim-foldround'
-
-	" neobundle.vim (Lazy)
-	NeoBundleLazy 'lambdalisue/vim-foldround', {
-	      \ 'on_func': 'foldround#',
-	      \ 'on_map': '<Plug>(foldround-',
-	      \}
 <
 Or copy the repository into one of your |runtimepath| of Vim.
 
@@ -69,30 +60,12 @@ USAGE						*vim-foldround-usage*
 This plugin does not provide default key mappings so define your mapping for
 |<Plug>(foldround-forward)| and/or |<Plug>(foldround-backward)| in |vimrc| like:
 >
-	nmap <C-f>f     <Plug>(foldround-forward)
-	nmap <C-f><C-f> <Plug>(foldround-forward)
-	nmap <C-f>b     <Plug>(foldround-backward)
-	nmap <C-f><C-b> <Plug>(foldround-backward)
+	nmap <Leader>ff <Plug>(foldround-forward)
+	nmap <Leader>fb <Plug>(foldround-backward)
 <
-Then hit <C-f>f to change to the next |foldmethod|. foldround automatically
+Then hit <Leader>ff to change to the next |foldmethod|. foldround automatically
 detect the current foldmethod and select a next one.
 
-If you would like to limit available foldmethods, use |foldround#register()|
-to register your own rule like:
->
-	"
-	" NOTE: Later registration is prior to be used.
-	"
-	" Disable foldround when the buffer is in 'diff' mode.
-	call foldround#register('.*', [
-	      \ 'disable', 'manual', 'indent',
-	      \ 'expr', 'marker', 'syntax'
-	      \])
-	" Use 'syntax' and 'marker' in Vim scripts
-	call foldround#register('.*\.vim$', ['syntax', 'marker'])
-	" But in Vim scripts in ftplugin directory
-	call foldround#register('ftplugin/.*\.vim$', ['syntax'])
-<
 Note that if you would like to set a default |foldmethod| of a particular
 |filetype|, use your |ftplugin| to define a default value (that is not a part
 of this plugin's bussiness).
@@ -102,29 +75,6 @@ INTERFACE					*vim-foldround-interface*
 
 -----------------------------------------------------------------------------
 FUNCTIONS					*vim-foldround-functions*
-
-foldround#register({rule}, {methods})		*foldround#register()*
-
-	Register a new foldmethod detection rule.
-	{rule} is a |regular-expression| which will be compared with an
-	absolute filename; expand('%:p'); of the current buffer.
-	{methods} is a |List| which contains the few of the following values:
-
-	'disable'	Folds are disabled.
-	'manual'	Folds are created manually.
-	'indent'	Lines with equal indent form a fold.
-	'expr'		'foldexpr' give the fold level of a line.
-	'marker'	Markers are used to specify folds.
-	'syntax'	Syntax highlighting items specify folds.
-	'diff'		Fold text that is not changed.
-
-	foldround will try to select one of foldmethod listed in {methods}
-	for a buffer which name follow the {rule}.
-
-	Note that 'diff' is only available when 'diff' is listed and the
-	buffer is in |diff| mode. It will be ignored if the buffer is not in
-	|diff| mode or warned when 'diff' is not listed and the buffer is in
-	|diff| mode.
 
 foldround#forward({offset})			*foldround#forward()*
 
@@ -156,6 +106,11 @@ MAPPINGS					*vim-foldround-mappings*
 	Select (n-th) previous available foldmethod.
 	See |foldround#previous()| for detail.
 
+=============================================================================
+CHANGELOG					*vim-foldround-changelog*
+
+2016.12.29
+	Remove a feature to limit available foldmethods.
 
 =============================================================================
 vim:tw=78:fo=tcq2mM:ts=8:ft=help:norl
